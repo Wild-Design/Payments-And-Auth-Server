@@ -25,6 +25,7 @@ export default (sequelize: Sequelize) => {
       email: {
         type: DataTypes.TEXT,
         allowNull: false,
+        unique: true,
       },
       phone_number: {
         type: DataTypes.INTEGER,

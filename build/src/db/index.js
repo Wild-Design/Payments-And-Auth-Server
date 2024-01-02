@@ -8,4 +8,6 @@ figure(sequelize);
 user(sequelize);
 purchase(sequelize);
 const { Figure, User, Purchase } = sequelize.models;
+Purchase.belongsTo(User);
+Purchase.belongsTo(Figure);
 export default sequelize;
