@@ -1,6 +1,6 @@
 import { Sequelize } from 'sequelize';
 import { config } from 'dotenv';
-import { figure, user, purchase } from './models/index.js';
+import { figure, user, cart } from './models/index.js';
 config();
 
 const { USER, PASSWORD, HOST, DB_PORT, DB_NAME } = process.env;
@@ -12,11 +12,13 @@ const sequelize: Sequelize = new Sequelize(
 
 figure(sequelize);
 user(sequelize);
-purchase(sequelize);
+cart(sequelize);
 
-const { Figure, User, Purchase } = sequelize.models;
+const { Figure, User, Cart } = sequelize.models;
+User.hasMany(Cart);
+Cart.belongsTo(User);
 
-Purchase.belongsTo(User);
-Purchase.belongsTo(Figure);
+Cart.belongsToMany(Figure, { through: 'cart_figure' });
+Figure.belongsToMany(Cart, { through: 'cart_figure' });
 
 export default sequelize;

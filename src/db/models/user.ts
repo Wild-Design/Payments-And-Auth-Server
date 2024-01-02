@@ -27,6 +27,10 @@ export default (sequelize: Sequelize) => {
         allowNull: false,
         unique: true,
       },
+      password: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+      },
       phone_number: {
         type: DataTypes.INTEGER,
       },

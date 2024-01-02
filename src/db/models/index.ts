@@ -1,5 +1,5 @@
 import user from './user.js';
 import figure from './figure.js';
-import purchase from './purchase.js';
+import cart from './cart.js';
 
-export { user, figure, purchase };
+export { user, figure, cart };
