@@ -14,7 +14,7 @@ figure(sequelize);
 user(sequelize);
 cart(sequelize);
 
-const { Figure, User, Cart } = sequelize.models;
+export const { Figure, User, Cart } = sequelize.models;
 User.hasMany(Cart);
 Cart.belongsTo(User);
 

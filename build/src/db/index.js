@@ -7,7 +7,7 @@ const sequelize = new Sequelize(`postgres://${USER}:${PASSWORD}@${HOST}:${DB_POR
 figure(sequelize);
 user(sequelize);
 cart(sequelize);
-const { Figure, User, Cart } = sequelize.models;
+export const { Figure, User, Cart } = sequelize.models;
 User.hasMany(Cart);
 Cart.belongsTo(User);
 Cart.belongsToMany(Figure, { through: 'cart_figure' });

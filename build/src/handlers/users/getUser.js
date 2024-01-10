@@ -1,5 +1,8 @@
-export const getUser = (_req, res) => {
+import { User } from '../../db/index.js';
+export const getUser = async (_req, res) => {
     try {
+        const users = await User.findAll();
+        console.log(users);
         res.status(200).send('getUser OK');
     }
     catch (error) {
