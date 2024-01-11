@@ -3,6 +3,7 @@ import userRoutes from './user.routes.js';
 import { serialize } from 'cookie';
 
 import jwt from 'jsonwebtoken';
+const { verify } = jwt;
 
 const router = Router();
 
@@ -45,11 +46,38 @@ router.post('/auth/login', (req, res) => {
 
 router.get('/profile', (req, res) => {
   try {
-    console.log(req.cookies);
+    const { myTokenName } = req.cookies;
+    if (!myTokenName) {
+      return res.status(401).send('Error: No Token');
+    }
+    const parseToken = verify(myTokenName, 'secret'); //si este codigo no es valido lanza un error en el servidor aclaro!!
+    console.log(parseToken);
 
     res.status(200).send('getProfile Ok!');
   } catch (error: any) {
-    res.status(500).send(error.message);
+    res.status(401).send('Invalid Token');
+  }
+});
+
+router.get('/auth/logout', (req, res) => {
+  try {
+    const { myTokenName } = req.cookies;
+    if (!myTokenName) {
+      //Primero me fijo si el cliente tiene su token
+      return res.status(401).send('Error: No Token');
+    }
+    verify(myTokenName, 'secret');
+    const serialized = serialize('myTokenName', '', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production' ? true : false,
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
+      maxAge: 0,
+      path: '/',
+    });
+    res.setHeader('Set-Cookie', serialized);
+    res.status(200).send('Logout succesfully');
+  } catch (error: any) {
+    res.status(401).send('Invalid Token');
   }
 });
 //----------------------------------
