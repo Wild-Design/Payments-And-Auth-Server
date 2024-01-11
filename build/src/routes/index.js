@@ -37,7 +37,7 @@ router.post('/auth/login', (req, res) => {
 });
 router.get('/profile', (req, res) => {
     try {
-        console.log({ cookies: req.cookies });
+        console.log(req.cookies);
         res.status(200).send('getProfile Ok!');
     }
     catch (error) {
