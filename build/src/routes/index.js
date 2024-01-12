@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import userRoutes from './user.routes.js';
 import { serialize } from 'cookie';
+import { hashPassword, comparePassword } from '../utils/passwordEncrypted.js';
 import jwt from 'jsonwebtoken';
 const { verify } = jwt;
 const router = Router();
@@ -8,10 +9,14 @@ router.get('/', (_req, res) => {
     console.log('Welcome');
     res.status(200).send('Welcome');
 });
+router.get('/test', (_req, res) => {
+    const hash = hashPassword('123{}{}´dfdfee45**ss456789');
+    const compare = comparePassword('123{}{}´dfdfee45**ss456789', hash);
+    res.status(200).send(compare);
+});
 //----------------------------------
 router.post('/auth/login', (req, res) => {
     const { email, password } = req.body;
-    console.log(email, password);
     try {
         if (email === 'admin_admin@gmail.com' && password === 123456) {
             const token = jwt.sign({
