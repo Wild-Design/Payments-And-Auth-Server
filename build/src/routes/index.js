@@ -10,8 +10,8 @@ router.get('/', (_req, res) => {
     res.status(200).send('Welcome');
 });
 router.get('/test', (_req, res) => {
-    const hash = hashPassword('123{}{}´dfdfee45**ss456789');
-    const compare = comparePassword('123{}{}´dfdfee45**ss456789', hash);
+    const hash = hashPassword('123{}{}dfdfee45**ss456789');
+    const compare = comparePassword('123{}{}dfdfee45**ss456789', hash);
     res.status(200).send(compare);
 });
 //----------------------------------
