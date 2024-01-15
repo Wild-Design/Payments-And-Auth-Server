@@ -1,12 +1,11 @@
 import { Request, Response } from 'express';
 import { User } from '../../db/index.js';
 
-export const getUser = async (_req: Request, res: Response) => {
+export default async (_req: Request, res: Response) => {
   try {
     const users = await User.findAll();
-    console.log(users);
-    res.status(200).send('getUser OK');
+    res.status(200).send(users);
   } catch (error: any) {
-    res.status(500).send(`Error en el server getUser: ${error.message}`);
+    res.status(500).send(`Error in the server getUser: ${error.message}`);
   }
 };
