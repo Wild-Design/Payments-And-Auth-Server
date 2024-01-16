@@ -7,12 +7,10 @@ export default async (email, password) => {
         const findUser = await User.findOne({
             where: { email },
         });
-        if (findUser && comparePassword(password, findUser.password)) {
-            return true;
-        }
-        return false;
+        return findUser && comparePassword(password, findUser.password); //esto retorna true o null
     }
     catch (error) {
-        return false;
+        console.log(`Error in the auth: ${error.message}`);
+        return null;
     }
 };

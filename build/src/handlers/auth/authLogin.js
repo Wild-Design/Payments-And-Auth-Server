@@ -1,14 +1,19 @@
 import jwt from 'jsonwebtoken';
 import { serialize } from 'cookie';
 import verifyUser from '../../controllers/authControllers/verifyUser.js';
+import getUserCredentials from '../../controllers/authControllers/getUserCredentials.js';
 export default async (req, res) => {
     const { email, password } = req.body;
+    if (!email || !password) {
+        return res.status(400).send('email and password are required');
+    }
     try {
-        if (await verifyUser(email, password)) {
+        const verify = await verifyUser(email, password);
+        const userCredentials = await getUserCredentials(email);
+        if (verify && userCredentials) {
             const token = jwt.sign({
                 exp: Math.floor(Date.now() / 1000) + 60 * 68 * 24 * 30, //tiempo valido del token
-                email, //le envio los datos que quiero(la idea que sean los de la DB) ahora solo envio lo que llega en el body
-                password,
+                userCredentials,
             }, 'secret' //ahora es harcodeada pero la idea es que sea una variable de entorno con otro nombre claro
             );
             const serialized = serialize('myTokenName', token, {
@@ -19,7 +24,7 @@ export default async (req, res) => {
                 path: '/',
             });
             res.setHeader('Set-Cookie', serialized);
-            return res.status(200).send('Login succesfully');
+            return res.status(200).send('Autentication failed');
         }
         return res.status(403).send('unautenticated');
     }
