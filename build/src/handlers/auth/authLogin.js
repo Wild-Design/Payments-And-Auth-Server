@@ -1,9 +1,10 @@
 import jwt from 'jsonwebtoken';
 import { serialize } from 'cookie';
+import verifyUser from '../../controllers/authControllers/verifyUser.js';
 export default async (req, res) => {
     const { email, password } = req.body;
     try {
-        if (email === 'admin_admin@gmail.com' && password === 123456) {
+        if (await verifyUser(email, password)) {
             const token = jwt.sign({
                 exp: Math.floor(Date.now() / 1000) + 60 * 68 * 24 * 30, //tiempo valido del token
                 email, //le envio los datos que quiero(la idea que sean los de la DB) ahora solo envio lo que llega en el body

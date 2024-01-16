@@ -1,12 +1,13 @@
 import jwt from 'jsonwebtoken';
 import { serialize } from 'cookie';
 import { Request, Response } from 'express';
+import verifyUser from '../../controllers/authControllers/verifyUser.js';
 
 export default async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
   try {
-    if (email === 'admin_admin@gmail.com' && password === 123456) {
+    if (await verifyUser(email, password)) {
       const token = jwt.sign(
         {
           exp: Math.floor(Date.now() / 1000) + 60 * 68 * 24 * 30, //tiempo valido del token
