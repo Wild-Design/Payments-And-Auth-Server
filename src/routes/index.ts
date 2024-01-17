@@ -77,10 +77,11 @@ router.get('/auth/logout', (req, res) => {
       //Primero me fijo si el cliente tiene su token
       return res.status(401).send('Error: No Token');
     }
-    verify(AuthToken, `${SECRET_AUTH}`);
+    const isValidToken = verify(AuthToken, `${SECRET_AUTH}`);
+    console.log(isValidToken);
     const serialized = serialize('AuthToken', '', {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production' ? true : false,
+      secure: process.env.NODE_ENV === 'production',
       sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
       maxAge: 0,
       path: '/',
@@ -88,7 +89,7 @@ router.get('/auth/logout', (req, res) => {
     res.setHeader('Set-Cookie', serialized);
     res.status(200).send('Logout succesfully');
   } catch (error: any) {
-    res.status(401).send('Invalid Token');
+    res.status(401).send('Invalid or expired Token');
   }
 });
 //----------------------------------
