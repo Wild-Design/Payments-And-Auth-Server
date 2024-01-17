@@ -60,8 +60,8 @@ router.get('/profile', (req, res) => {
     if (!myTokenName) {
       return res.status(401).send('Error: No Token');
     }
-    const parseToken = verify(myTokenName, 'secret'); //si este codigo no es valido lanza un error en el servidor aclaro!!
-    console.log(parseToken);
+    const isValidToken = verify(myTokenName, 'secret'); //si este codigo no es valido lanza un error en el servidor aclaro!!
+    console.log(isValidToken);
 
     res.status(200).send('getProfile Ok!');
   } catch (error: any) {
