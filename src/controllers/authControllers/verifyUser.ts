@@ -10,6 +10,7 @@ export default async (
 ): Promise<true | null> => {
   try {
     const findUser: any = await User.findOne({
+      attributes: ['email', 'password'], //Solo traigo esos datos de la DB
       where: { email },
     });
 

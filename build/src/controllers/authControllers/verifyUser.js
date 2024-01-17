@@ -5,6 +5,7 @@ import { comparePassword } from '../../utils/passwordEncrypted.js';
 export default async (email, password) => {
     try {
         const findUser = await User.findOne({
+            attributes: ['email', 'password'], //Solo traigo esos datos de la DB
             where: { email },
         });
         return findUser && comparePassword(password, findUser.password); //esto retorna true o null

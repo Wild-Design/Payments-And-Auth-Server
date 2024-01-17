@@ -9,8 +9,11 @@ interface UserCredentials {
 
 export default async (email: string): Promise<UserCredentials | null> => {
   try {
-    const userCredentials: any = await User.findOne({ where: { email } });
-    return { email: userCredentials.email, password: userCredentials.password };
+    const userCredentials: any = await User.findOne({
+      attributes: ['id'], //Solo guardo el id en la cookie (podria guardar mas datos pero creo que esta bien con solo el id)
+      where: { email },
+    });
+    return userCredentials;
   } catch (error: any) {
     console.log(`Error in getUserCredentials: ${error.message}`);
     return null;

@@ -3,6 +3,7 @@ import { serialize } from 'cookie';
 import { Request, Response } from 'express';
 import verifyUser from '../../controllers/authControllers/verifyUser.js';
 import getUserCredentials from '../../controllers/authControllers/getUserCredentials.js';
+const { SECRET_AUTH } = process.env;
 
 export default async (req: Request, res: Response) => {
   const { email, password } = req.body;
@@ -19,20 +20,20 @@ export default async (req: Request, res: Response) => {
           exp: Math.floor(Date.now() / 1000) + 60 * 68 * 24 * 30, //tiempo valido del token
           userCredentials,
         },
-        'secret' //ahora es harcodeada pero la idea es que sea una variable de entorno con otro nombre claro
+        `${SECRET_AUTH}`
       );
-      const serialized = serialize('myTokenName', token, {
+      const serialized = serialize('AuthToken', token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production' ? true : false,
+        secure: process.env.NODE_ENV === 'production',
         sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
         maxAge: 1000 * 60 * 60 * 24 * 30,
         path: '/',
       });
 
       res.setHeader('Set-Cookie', serialized);
-      return res.status(200).send('Autentication failed');
+      return res.status(200).send('Autentication succesfully');
     }
-    return res.status(403).send('unautenticated');
+    return res.status(403).send('Autentication failed');
   } catch (error: any) {
     res.status(500).send(error.message);
   }

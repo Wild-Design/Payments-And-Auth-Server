@@ -5,6 +5,7 @@ import { serialize } from 'cookie';
 import { hashPassword, comparePassword } from '../utils/passwordEncrypted.js';
 import jwt from 'jsonwebtoken';
 const { verify } = jwt;
+const { SECRET_AUTH } = process.env;
 const router = Router();
 router.get('/', (_req, res) => {
     console.log('Welcome');
@@ -49,12 +50,12 @@ router.get('/test', async (req, res) => {
 // });
 router.get('/profile', (req, res) => {
     try {
-        const { myTokenName } = req.cookies;
-        if (!myTokenName) {
+        const { AuthToken } = req.cookies;
+        if (!AuthToken) {
             return res.status(401).send('Error: No Token');
         }
-        const parseToken = verify(myTokenName, 'secret'); //si este codigo no es valido lanza un error en el servidor aclaro!!
-        console.log(parseToken);
+        const isValidToken = verify(AuthToken, `${SECRET_AUTH}`); //si este codigo no es valido lanza un (ERROR por eso hay que manejarlo con try catch)
+        console.log(isValidToken);
         res.status(200).send('getProfile Ok!');
     }
     catch (error) {
@@ -63,13 +64,13 @@ router.get('/profile', (req, res) => {
 });
 router.get('/auth/logout', (req, res) => {
     try {
-        const { myTokenName } = req.cookies;
-        if (!myTokenName) {
+        const { AuthToken } = req.cookies;
+        if (!AuthToken) {
             //Primero me fijo si el cliente tiene su token
             return res.status(401).send('Error: No Token');
         }
-        verify(myTokenName, 'secret');
-        const serialized = serialize('myTokenName', '', {
+        verify(AuthToken, `${SECRET_AUTH}`);
+        const serialized = serialize('AuthToken', '', {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production' ? true : false,
             sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
