@@ -6,10 +6,11 @@ import { hashPassword, comparePassword } from '../utils/passwordEncrypted.js';
 import jwt from 'jsonwebtoken';
 const { verify } = jwt;
 const { SECRET_AUTH } = process.env;
+import { isAutenticated } from '../middlewares/authenticateMiddleware.js';
 const router = Router();
-router.get('/', (_req, res) => {
-    console.log('Welcome');
-    res.status(200).send('Welcome');
+router.get('/', isAutenticated, (req, res) => {
+    const { user } = req;
+    res.status(200).send({ userCredentials: user });
 });
 router.get('/test', async (req, res) => {
     const { email, password } = req.body;
@@ -48,15 +49,15 @@ router.get('/test', async (req, res) => {
 //     res.status(500).send(error.messaje);
 //   }
 // });
-router.get('/profile', (req, res) => {
+router.get('/profile', isAutenticated, (req, res) => {
     try {
-        const { AuthToken } = req.cookies;
-        if (!AuthToken) {
-            return res.status(401).send('Error: No Token');
-        }
-        const isValidToken = verify(AuthToken, `${SECRET_AUTH}`); //si este codigo no es valido lanza un (ERROR por eso hay que manejarlo con try catch)
-        console.log(isValidToken);
-        res.status(200).send('getProfile Ok!');
+        // const { AuthToken } = req.cookies;
+        // if (!AuthToken) {
+        //   return res.status(401).send('Error: No Token');
+        // }
+        // const isValidToken = verify(AuthToken, `${SECRET_AUTH}`); //si este codigo no es valido lanza un (ERROR por eso hay que manejarlo con try catch)
+        // console.log(isValidToken);
+        res.status(200).send(req.user?.id);
     }
     catch (error) {
         res.status(401).send('Invalid Token');
