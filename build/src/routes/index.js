@@ -8,9 +8,8 @@ import { hashPassword, comparePassword } from '../utils/passwordEncrypted.js';
 // const { SECRET_AUTH } = process.env;
 import { isAutenticated } from '../middlewares/authenticateMiddleware.js';
 const router = Router();
-router.get('/', isAutenticated, (req, res) => {
-    const { user } = req;
-    res.status(200).send({ userCredentials: user });
+router.get('/', (_req, res) => {
+    res.status(200).send('Welcome to Payments and Auth Server');
 });
 router.get('/test', async (req, res) => {
     const { email, password } = req.body;
@@ -63,29 +62,6 @@ router.get('/profile', isAutenticated, (req, res) => {
         res.status(401).send('Invalid Token');
     }
 });
-// router.get('/auth/logout', (req, res) => {
-//   try {
-//     const { AuthToken } = req.cookies;
-//     if (!AuthToken) {
-//       //Primero me fijo si el cliente tiene su token
-//       return res.status(401).send('Error: No Token');
-//     }
-//     const isValidToken = verify(AuthToken, `${SECRET_AUTH}`);
-//     console.log(isValidToken);
-//     const serialized = serialize('AuthToken', '', {
-//       httpOnly: true,
-//       secure: process.env.NODE_ENV === 'production',
-//       sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
-//       maxAge: 0,
-//       path: '/',
-//     });
-//     res.setHeader('Set-Cookie', serialized);
-//     res.status(200).send('Logout succesfully');
-//   } catch (error: any) {
-//     res.status(401).send('Invalid or expired Token');
-//   }
-// });
-//----------------------------------
 router.use('/auth', authRoutes);
 router.use('/user', userRoutes);
 export default router;
