@@ -29,7 +29,7 @@ export default (sequelize) => {
             allowNull: false,
         },
         phone_number: {
-            type: DataTypes.NUMBER,
+            type: DataTypes.STRING(20),
         },
     }, {
         timestamps: false,
