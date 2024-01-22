@@ -7,6 +7,11 @@ import { hashPassword, comparePassword } from '../utils/passwordEncrypted.js';
 // const { verify } = jwt;
 // const { SECRET_AUTH } = process.env;
 import { isAutenticated } from '../middlewares/authenticateMiddleware.js';
+import mercadopago from 'mercadopago';
+const { ACCESS_TOKEN_MERCADOPAGO } = process.env;
+mercadopago.configure({
+    access_token: ACCESS_TOKEN_MERCADOPAGO || '',
+});
 const router = Router();
 router.get('/', (_req, res) => {
     res.status(200).send('Welcome to Payments and Auth Server');

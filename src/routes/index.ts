@@ -8,6 +8,12 @@ import { hashPassword, comparePassword } from '../utils/passwordEncrypted.js';
 // const { SECRET_AUTH } = process.env;
 import { isAutenticated } from '../middlewares/authenticateMiddleware.js';
 import { AuthenticatedRequest } from '../interfaces/auth.js';
+import mercadopago from 'mercadopago';
+const { ACCESS_TOKEN_MERCADOPAGO } = process.env;
+
+mercadopago.configure({
+  access_token: ACCESS_TOKEN_MERCADOPAGO || '',
+});
 
 const router = Router();
 

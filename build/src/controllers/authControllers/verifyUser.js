@@ -1,6 +1,6 @@
 import { User } from '../../db/index.js';
 import { comparePassword } from '../../utils/passwordEncrypted.js';
-/*Esta función la uso para verificar que este autenticado el usuario(Que el email
+/*Esta función la uso para verificar(Que el email
   que pasa en el cliente sea el mismo de la DB y que el password sea el mismo)*/
 export default async (email, password) => {
     try {
@@ -8,7 +8,7 @@ export default async (email, password) => {
             attributes: ['email', 'password'], //Solo traigo esos datos de la DB
             where: { email },
         });
-        return findUser && comparePassword(password, findUser.password); //esto retorna true o null
+        return findUser && comparePassword(password, findUser.password); //Comparo el password del cliente para saber si es correcto con el del hash
     }
     catch (error) {
         console.log(`Error in the auth: ${error.message}`);
