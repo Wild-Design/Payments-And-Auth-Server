@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import userRoutes from './user.routes.js';
 import authRoutes from './auth.routes.js';
+import paymentRoutes from './payment.routes.js';
 // import { serialize } from 'cookie';
 import { hashPassword, comparePassword } from '../utils/passwordEncrypted.js';
 // import jwt from 'jsonwebtoken';
@@ -29,6 +30,7 @@ router.get('/test', async (req, res) => {
 //----------------------------------
 router.post('/mercadopago', async (_req, res) => {
     try {
+        //La idea esta traer los productos desde el front con req.body, ahora uso un objeto de preferences hardcodeado
         const preferenceData = {
             items: [
                 {
@@ -63,7 +65,7 @@ router.post('/mercadopago', async (_req, res) => {
             auto_return: 'approved',
         };
         const response = await mercadopago.preferences.create(preferenceData);
-        res.status(200).send(response);
+        res.status(200).send(response.response.init_point);
     }
     catch (error) {
         res.status(500).send(error.message);
@@ -116,4 +118,5 @@ router.get('/profile', isAutenticated, async (req, res) => {
 });
 router.use('/auth', authRoutes);
 router.use('/user', userRoutes);
+router.use('/payment', paymentRoutes);
 export default router;
