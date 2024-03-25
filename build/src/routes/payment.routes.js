@@ -17,9 +17,9 @@ router.post('/create-order', async (_req, res) => {
             },
         ],
         back_urls: {
-            success: 'http://localhost:3001/payment/success',
-            failure: 'http://localhost:3001/paymet/failure',
-            pending: 'http://localhost:3001/payment/pending',
+            success: 'http://localhost:3000/payment/success',
+            failure: 'http://localhost:3000/paymet/failure',
+            pending: 'http://localhost:3000/payment/pending',
         },
         auto_return: 'approved',
         notification_url: 'https://5653-170-245-168-144.ngrok-free.app/payment/webhook',
