@@ -22,7 +22,7 @@ router.post('/create-order', async (_req, res) => {
             pending: 'http://localhost:3000/payment/pending',
         },
         auto_return: 'approved',
-        notification_url: 'https://5653-170-245-168-144.ngrok-free.app/payment/webhook',
+        notification_url: 'https://cd47-190-52-89-97.ngrok-free.app/payment/webhook',
     });
     res.status(200).send(response.response.init_point);
 });

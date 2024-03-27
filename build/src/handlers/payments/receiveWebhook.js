@@ -1,6 +1,7 @@
 import mercadopago from 'mercadopago';
 export default async (req, res) => {
     try {
+        console.log(`Llego el Webhook ${req.query}`);
         const payment = req.query;
         // Verificar si 'data.id' existe y es una cadena
         if (payment.type === 'payment' && typeof payment['data.id'] === 'string') {

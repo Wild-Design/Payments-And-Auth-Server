@@ -26,7 +26,7 @@ router.post('/create-order', async (_req: Request, res: Response) => {
     },
     auto_return: 'approved',
     notification_url:
-      'https://5653-170-245-168-144.ngrok-free.app/payment/webhook',
+      'https://cd47-190-52-89-97.ngrok-free.app/payment/webhook',
   });
   res.status(200).send(response.response.init_point);
 });

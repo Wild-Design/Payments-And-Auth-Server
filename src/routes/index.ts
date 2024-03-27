@@ -72,6 +72,8 @@ router.post('/mercadopago', async (_req: Request, res: Response) => {
         failure: 'http://localhost:5173/fallo',
       },
       auto_return: 'approved',
+      notification_url:
+        'https://e94a-170-245-171-162.ngrok-free.app/mercadopago',
     };
     const response = await mercadopago.preferences.create(preferenceData);
     res.status(200).send(response.response.init_point);
