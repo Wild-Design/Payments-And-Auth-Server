@@ -18,7 +18,7 @@ export default async (req: Request, res: Response) => {
       const token = jwt.sign(
         {
           exp: Math.floor(Date.now() / 1000) + 60 * 68 * 24 * 30, //tiempo valido del token
-          userCredentials,
+          userCredentials, //Aca solo es un string con el id pero podría ser cualquier tipo de dato
         },
         `${SECRET_AUTH}`
       );

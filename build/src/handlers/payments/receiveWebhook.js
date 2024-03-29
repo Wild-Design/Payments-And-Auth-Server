@@ -1,7 +1,6 @@
 import mercadopago from 'mercadopago';
 export default async (req, res) => {
     try {
-        console.log(`Llego el Webhook ${req.query}`);
         const payment = req.query;
         // Verificar si 'data.id' existe y es una cadena
         if (payment.type === 'payment' && typeof payment['data.id'] === 'string') {
@@ -9,7 +8,7 @@ export default async (req, res) => {
             // Verificar si la conversión fue exitosa y no es NaN
             if (!isNaN(parseId)) {
                 const data = await mercadopago.payment.findById(parseId);
-                console.log(data);
+                console.log(data.body.payer);
             }
         }
         res.status(200).sendStatus(204);
